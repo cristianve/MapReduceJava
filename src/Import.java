@@ -1,69 +1,69 @@
+
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Vector; 
-import java.util.Hashtable; //List (k,v)
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.util.Vector;
 
-// Permite añadir librerias Vectors, Hash exclusivamente
-// Requiere utilizacion de threads
+/**
+ * 
+ */
+
+/**
+ * Class Import:
+ * Clase encargada de leer el archivo
+ * especificado en los argumentos de entrada
+ * y guardarlo cada linea en una posion
+ * de un Vector<String>
+ */
 
 public class Import {
+	
+	
+	private Vector<String> lines = new Vector<String>();
+	
+	
+	
+	/**
+	* Constructor encargado de leer todas las lineas del fichero especificado por el fileName
+	*/
+	Import(String fileName) throws UnsupportedEncodingException{
+		
 
-	public Import(String fileName) {
+		//File file = new File(fileName+".txt"); 
+		File file = new File(fileName); 
+		BufferedReader br = null;
+
+		try {
+			 br = new BufferedReader(new InputStreamReader(new FileInputStream(file),"UTF8"));
+		} catch (FileNotFoundException e) {
+			
+			System.out.println("Error: Fichero no se ha encontrado.");
+			e.printStackTrace();
+		} 
+		 
+		String st;
+		  
+		try {
 		
-	
-	  File file = new File(fileName+".txt"); 
-	  BufferedReader br = null;
-	  
-	  //Lectura fichero
-	try {
-		br = new BufferedReader(new FileReader(file));
-	} catch (FileNotFoundException e) {
-		
-		System.out.println("Error: Fichero no se ha encontrado.");
-		e.printStackTrace();
-	} 
-	 
-	//Cargar vector de lineas
-	  String st; 
-	  Vector<String> lines = new Vector<String>();
-	  
-	  try {
-	
-		while ((st = br.readLine()) != null) 
-			lines.add(st);
-	} catch (IOException e) {
-		System.out.println("Error: No se puede leer las lineas del fichero: "+fileName+".txt");
-		e.printStackTrace();
-	} 
-	  
-	  //Mostrar vector de lineas
-	  System.out.println("Mostrar Vector Lineas:\n\n");
-	  for(int i=0;i<lines.size();i++){
+			while ((st = br.readLine()) != null) 
+				lines.add(st.replaceAll("\\.", "").replaceAll("\\,", "").replaceAll("\\;","").toLowerCase()); //TODO ARREGLAR REPLACE
+		} catch (IOException e) {
+			System.out.println("Error: No se puede leer las lineas del fichero: "+fileName);
+			e.printStackTrace();
+		} 
 		  
-		  System.out.println(lines.get(i));
-	  }
-	  
-	  
-	  Hashtable <String,Integer> mapping = new Hashtable<String,Integer>();
-	  //Split to Hastable
-	  for(int i=0;i<lines.size();i++){
 		  
-		  String[] palabras = lines.get(i).split(" ");
-		  
-		  for(int j=0;j<palabras.length;j++) {
-			  
-			  mapping.put(palabras[j],1);
-		  }
-	  }
-	  
-	  // create a clone or shallow copy of hash table h 
-    
-      System.out.println("\nMapping<String,Interger> <key,value>:\n " + mapping); 
-	  System.out.println("\nNumero de valores mapa: "+mapping.size());
-	   
 	}
+
+	public Vector<String> getLines() {
+		return lines;
+	}
+
+
+
+	
 }
